@@ -65,10 +65,7 @@ app.get("/api/sessions/allname", async (req,res) => {
   try {
    
 
-    const sessionName = await db.select({
-      id: sessions.id,
-      name: sessions.name
-    }).from(sessions);
+    const sessionName = await db.select().from(sessions);
     res.status(200).json(sessionName);
 
   } catch (error) {
