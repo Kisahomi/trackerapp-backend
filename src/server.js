@@ -87,36 +87,30 @@ app.post("/api/session-workouts", async (req, res) => {
 app.get("/api/session-workouts/allworkouts", async (req,res) => { //to get all session workouts and set
     
   try {
-   
-
-    const getSessionWorkouts = await db.select().from(sessionWorkouts);
+    const getSessionWorkouts = await db.select().from(sessionWorkout);
     res.status(200).json(getSessionWorkouts);
 
   } catch (error) {
     console.log("Error fetching session name: ", error)
-    res.status(500).json({error: "Something went wrong with fetching"})
+    res.status(500).json({error: "Something went wrong with fetching all workouts"})
   }
 })
 
 app.get("/api/session-days/alldays", async (req,res) => { //to get all session days
     
   try {
-   
-
     const getSessionDays = await db.select().from(sessionDay);
     res.status(200).json(getSessionDays);
 
   } catch (error) {
     console.log("Error fetching session name: ", error)
-    res.status(500).json({error: "Something went wrong with fetching"})
+    res.status(500).json({error: "Something went wrong with fetching all days"})
   }
 })
 
 app.get("/api/sessions/allname", async (req,res) => { //to get all session name
     
   try {
-   
-
     const getSessionName = await db.select().from(sessions);
     res.status(200).json(getSessionName);
 
