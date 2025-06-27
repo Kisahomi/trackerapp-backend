@@ -84,10 +84,10 @@ app.post("/api/session-workouts", async (req, res) => {
   }
 })
 
-app.get("/api/session-workouts/allworkouts", async (req,res) => { //to get all session workouts and set
-    
+app.get("/api/session-workouts/:sessionId", async (req,res) => { //to get all session workouts and set
+  const {sessionId} = req.params;
   try {
-    const getSessionWorkouts = await db.select().from(sessionWorkout);
+    const getSessionWorkouts = await db.select().from(sessionWorkout).where(eq(sessionWorkout.sessionId, sessionId));
     res.status(200).json(getSessionWorkouts);
 
   } catch (error) {
@@ -96,10 +96,10 @@ app.get("/api/session-workouts/allworkouts", async (req,res) => { //to get all s
   }
 })
 
-app.get("/api/session-days/alldays", async (req,res) => { //to get all session days
-    
+app.get("/api/session-days/:sessionId", async (req,res) => { //to get all session days
+  const {sessionId} = req.params;
   try {
-    const getSessionDays = await db.select().from(sessionDay);
+    const getSessionDays = await db.select().from(sessionDay).where(eq(sessionDay.sessionId, sessionId));
     res.status(200).json(getSessionDays);
 
   } catch (error) {
