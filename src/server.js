@@ -84,6 +84,38 @@ app.post("/api/session-workouts", async (req, res) => {
   }
 })
 
+app.post("/api/sessions/full", async (req, res) => {
+
+    try {
+      
+      const {name, days, workouts} = req.body;
+      if (!name || !Array.isArray(days) || !Array.isArray(workouts)) throw new Error("Something went wrong with adding full session");
+
+      const [newSession] = await db.insert(sessions).values({name}).returning();
+
+      const sessionId = newSession.id;
+
+      const dayInsert = days.map(day => ({
+        sessionId,
+        daysOfWeek: day
+      }))
+      await db.insert(sessionDay).values(dayInsert);
+
+      const workoutInsert = workouts.map(workout => ({
+        sessionId,
+        workoutName: workout.workoutName,
+        sets: parseInt(workout.sets)
+      }))
+      await db.insert(sessionWorkout).values(workoutInsert);
+
+      res.status(201).json({ message: "Session created with days and workouts", sessionId });
+    } catch (error) {
+      console.error("Error creating full session:", error);
+      res.status(500).json({ error: "Something went wrong creating the full session" });
+    }
+
+})
+
 app.get("/api/session-workouts/:sessionId", async (req,res) => { //to get all session workouts and set
   const {sessionId} = req.params;
   try {
